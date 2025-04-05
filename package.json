@@ -2,7 +2,7 @@
   "name": "github-text-analysis-action",
   "version": "0.1.0",
   "description": "A GitHub Action that performs simple checks on text",
-  "main": "index.js",
+  "main": "lib/index.ts",
   "keywords": [],
   "author": "samdouble",
   "license": "ISC",
@@ -10,11 +10,14 @@
     "audit": "npm-audit",
     "build": "npm install -g @vercel/ncc && tsc && ncc build dist/index.js -o output",
     "lint": "eslint",
-    "test": "jest"
+    "test": "jest --config jest.config.ts"
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0"
+    "@actions/github": "^6.0.0",
+    "glob": "^11.0.1",
+    "marked": "^15.0.7",
+    "node-html-parser": "^7.0.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

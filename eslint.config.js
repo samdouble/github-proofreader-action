@@ -1,9 +1,10 @@
-import { defineConfig } from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
-	{
-		rules: {
-			'prefer-const': 'error',
+  globalIgnores(['dist/*', 'node_modules/*', 'output/*']),
+  {
+    rules: {
+      'prefer-const': 'error',
 			semi: 'error',
 		},
 	},

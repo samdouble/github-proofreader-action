@@ -12,7 +12,6 @@
       "internalConsoleOptions": "openOnSessionStart",
       "env": {
         "NODE_ENV": "development",
-        "INPUT_GH-TOKEN": "secret-token-123456",
         "INPUT_LABEL": "needs-review"
       }
     }

@@ -3,10 +3,9 @@ description: A GitHub Action that performs simple checks on text
 author: samdouble
 
 inputs:
-  name:
-    description: The name of the person to greet
+  label:
+    description: 'The label to be applied to the pull request.'
     required: true
-    default: World
 
 branding:
   icon: activity
@@ -14,4 +13,4 @@ branding:
 
 runs:
   using: node20
-  main: output/index.js
+  main: dist/index.js
