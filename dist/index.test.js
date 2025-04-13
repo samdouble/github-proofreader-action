@@ -10,53 +10,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require(".");
-// import { getInput, setFailed } from '@actions/core';
-// import { context, getOctokit } from '@actions/github';
-jest.mock('@actions/core', () => ({
-    getInput: jest.fn(),
-    setFailed: jest.fn(),
-}));
-jest.mock('@actions/github', () => ({
-    context: {
-        payload: {
-            pull_request: {
-                number: 1,
-            },
-        },
-        repo: {
-            owner: 'owner',
-            repo: 'repo',
-        },
-    },
-    getOctokit: jest.fn(),
-}));
-describe('run', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-    it('should add label to the pull request', () => __awaiter(void 0, void 0, void 0, function* () {
-        // (getInput as jest.Mock).mockReturnValueOnce('label-value');
-        // (context as any).payload.pull_request = {
-        //   number: 1,
-        // };
-        // const mockAddLabels = jest.fn();
-        // const mockOctokit = {
-        //   rest: {
-        //     issues: {
-        //       addLabels: mockAddLabels,
-        //     },
-        //   },
-        // };
-        // (getOctokit as jest.Mock).mockReturnValueOnce(mockOctokit);
-        yield (0, _1.run)();
-        expect(1).toBe(1);
-        // expect(getInput).toHaveBeenCalledWith('label');
-        // expect(mockAddLabels).toHaveBeenCalledWith({
-        //   owner: 'owner',
-        //   repo: 'repo',
-        //   issue_number: 1,
-        //   labels: ['label-value'],
-        // });
-        // expect(setFailed).not.toHaveBeenCalled();
+describe('parse', () => {
+    it('should return 0 errors for a single short sentence', () => __awaiter(void 0, void 0, void 0, function* () {
+        const { errors, sentences } = yield (0, _1.parseTextNodes)(['Hello world']);
+        expect(errors.length).toBe(0);
+        expect(sentences.length).toBe(1);
+    }));
+    it('should correctly split sentences with ., ? and !', () => __awaiter(void 0, void 0, void 0, function* () {
+        const { errors, sentences } = yield (0, _1.parseTextNodes)(['Hello. This is a sentence! Or multiple sentences? Whatever']);
+        expect(errors.length).toBe(0);
+        expect(sentences.length).toBe(4);
+        expect(sentences[0]).toBe('Hello.');
+        expect(sentences[1]).toBe(' This is a sentence!');
+        expect(sentences[2]).toBe(' Or multiple sentences?');
+        expect(sentences[3]).toBe(' Whatever');
     }));
 });

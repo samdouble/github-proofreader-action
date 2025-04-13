@@ -6,12 +6,11 @@ const readNode = (node) => {
     const nodes = [];
     for (const childNode of node.childNodes) {
         if (childNode.nodeType === node_html_parser_1.NodeType.TEXT_NODE) {
-            console.log(childNode.rawText);
             nodes.push(childNode.rawText);
         }
         else if (childNode.nodeType === node_html_parser_1.NodeType.ELEMENT_NODE) {
             if (childNode.rawTagName === 'img') {
-                console.log(childNode.rawAttributes.src);
+                // console.log((childNode as HTMLElement).rawAttributes.src);
             }
             (0, exports.readNode)(childNode);
         }

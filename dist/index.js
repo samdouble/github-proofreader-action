@@ -12,27 +12,57 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.run = run;
+exports.parseTextNodes = parseTextNodes;
+exports.parse = parse;
 const glob_1 = require("glob");
 const promises_1 = __importDefault(require("node:fs/promises"));
 const node_path_1 = __importDefault(require("node:path"));
 const html_1 = require("./parsers/html");
 const markdown_1 = require("./parsers/markdown");
-// import { getInput, setFailed } from '@actions/core';
-const config = [{
-        patterns: ['src/**/*.md'],
-        rules: [{
-                "max-sentence-length": 25,
-            }],
-    }];
-function run() {
+const config = {
+    exclude: ['node_modules/**'],
+    patterns: ['src/**/*.md'],
+    rules: {
+        "max-sentence-length": {
+            "warn-value": 20,
+            "error-value": 25,
+        },
+    },
+};
+function parseTextNodes(textNodes) {
     return __awaiter(this, void 0, void 0, function* () {
-        // const label = getInput('label');
-        const fileNames = yield (0, glob_1.glob)('src/**/*.md', { ignore: 'node_modules/**' });
+        const errors = [];
+        const sentences = [];
+        for (const textNode of textNodes) {
+            const matches = [...textNode.matchAll(/([^\?!\.]+[\?!\.]?)/g)];
+            const textNodeSentences = matches.map((match) => match[0]);
+            sentences.push(...textNodeSentences);
+            for (const sentence of sentences) {
+                const trimmedSentence = sentence.trim();
+                const words = trimmedSentence.split(' ');
+                if (words.length > 25) {
+                    errors.push({
+                        line: 'TODO',
+                        nbWords: words.length,
+                        sentence,
+                    });
+                }
+            }
+        }
+        return {
+            errors,
+            sentences,
+        };
+    });
+}
+function parse() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const errors = [];
+        const warnings = [];
+        const fileNames = yield (0, glob_1.glob)('src/**/*.md', { ignore: config.exclude });
         for (const fileName of fileNames) {
             const fileContents = yield promises_1.default.readFile(fileName, { encoding: 'utf8' });
             const extension = node_path_1.default.extname(fileName);
-            console.log(fileName);
             let textNodes = [];
             if (extension === '.html') {
                 const parsedHtml = (0, html_1.parseHtml)(fileContents);
@@ -42,21 +72,14 @@ function run() {
                 const parsedHtml = yield (0, markdown_1.parseMarkdown)(fileContents);
                 textNodes = (0, html_1.readNode)(parsedHtml);
             }
-            for (const textNode of textNodes) {
-                console.log(textNode);
-                const sentences = textNode.split('.');
-                for (const sentence of sentences) {
-                    const trimmedSentence = sentence.trim();
-                    const words = trimmedSentence.split(' ');
-                    if (words.length > 25) {
-                        //console.log(sentence);
-                    }
-                }
-            }
+            const { errors: fileErrors, sentences } = yield parseTextNodes(textNodes);
+            console.log(fileName, sentences.length, fileErrors.length);
+            errors.push(...fileErrors);
         }
+        return errors;
     });
 }
-run();
 exports.default = {
-    run,
+    parse,
+    parseTextNodes,
 };

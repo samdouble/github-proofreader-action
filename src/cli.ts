@@ -4,7 +4,7 @@
 
 import fs from 'node:fs';
 import path from "node:path";
-import { run } from '.';
+import { parse } from '.';
 
 const args = process.argv.slice(2);
 
@@ -23,4 +23,4 @@ if (!fs.existsSync(src)) {
   process.exit();
 }
 
-run();
+parse();
