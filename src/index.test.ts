@@ -1,6 +1,6 @@
-import { parse, parseTextNodes } from '.';
+import { parseTextNodes } from '.';
 
-describe('parse', () => {
+describe('parseTextNodes', () => {
   it('should return 0 errors for a single short sentence', async () => {
     const { errors, sentences } = await parseTextNodes(['Hello world']);
     expect(errors.length).toBe(0);

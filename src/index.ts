@@ -61,8 +61,7 @@ export async function parse(): Promise<LintingError[]> {
       const parsedHtml = await parseMarkdown(fileContents);
       textNodes = readNode(parsedHtml);
     }
-    const { errors: fileErrors, sentences } = await parseTextNodes(textNodes);
-    console.log(fileName, sentences.length, fileErrors.length);
+    const { errors: fileErrors } = await parseTextNodes(textNodes);
     errors.push(...fileErrors);
   }
   return errors;
