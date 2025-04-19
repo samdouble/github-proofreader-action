@@ -58,7 +58,7 @@ export async function parse(): Promise<LintingError[]> {
       const parsedHtml = parseHtml(fileContents);
       textNodes = readNode(parsedHtml);
     } else if (extension === '.md') {
-      const parsedHtml = await parseMarkdown(fileContents);
+      const parsedHtml = parseMarkdown(fileContents);
       textNodes = readNode(parsedHtml);
     }
     const { errors: fileErrors } = await parseTextNodes(textNodes);
