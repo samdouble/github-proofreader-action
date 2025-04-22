@@ -1,19 +1,22 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseMarkdown = void 0;
-const marked_1 = require("marked");
+const markdown_it_1 = __importDefault(require("markdown-it"));
+// @ts-ignore
+const markdown_it_add_line_numbers_1 = require("markdown-it-add-line-numbers");
 const html_1 = require("./html");
-const parseMarkdown = (markdown) => __awaiter(void 0, void 0, void 0, function* () {
-    const parsedMarkdown = yield marked_1.marked.parse(markdown);
+const parseMarkdown = (markdown) => {
+    const md = (0, markdown_it_1.default)({
+        html: true,
+        linkify: true,
+        typographer: true,
+        xhtmlOut: true,
+    });
+    md.use(markdown_it_add_line_numbers_1.addLineNumbersPlugin);
+    const parsedMarkdown = md.render(markdown);
     return (0, html_1.parseHtml)(parsedMarkdown);
-});
+};
 exports.parseMarkdown = parseMarkdown;

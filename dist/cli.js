@@ -21,4 +21,4 @@ if (!node_fs_1.default.existsSync(src)) {
     console.log(`Error: Source file doesn't exist. Given: ${src}`);
     process.exit();
 }
-(0, _1.run)();
+(0, _1.parse)();
