@@ -69,11 +69,10 @@ function parse() {
                 textNodes = (0, html_1.readNode)(parsedHtml);
             }
             else if (extension === '.md') {
-                const parsedHtml = yield (0, markdown_1.parseMarkdown)(fileContents);
+                const parsedHtml = (0, markdown_1.parseMarkdown)(fileContents);
                 textNodes = (0, html_1.readNode)(parsedHtml);
             }
-            const { errors: fileErrors, sentences } = yield parseTextNodes(textNodes);
-            console.log(fileName, sentences.length, fileErrors.length);
+            const { errors: fileErrors } = yield parseTextNodes(textNodes);
             errors.push(...fileErrors);
         }
         return errors;

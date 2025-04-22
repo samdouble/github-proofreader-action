@@ -5,6 +5,7 @@ const node_html_parser_1 = require("node-html-parser");
 const readNode = (node) => {
     const nodes = [];
     for (const childNode of node.childNodes) {
+        // console.log(childNode, childNode.rawTagName, childNode.range);
         if (childNode.nodeType === node_html_parser_1.NodeType.TEXT_NODE) {
             nodes.push(childNode.rawText);
         }

@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require(".");
-describe('parse', () => {
+describe('parseTextNodes', () => {
     it('should return 0 errors for a single short sentence', () => __awaiter(void 0, void 0, void 0, function* () {
         const { errors, sentences } = yield (0, _1.parseTextNodes)(['Hello world']);
         expect(errors.length).toBe(0);
